@@ -4,7 +4,8 @@
   "description": "",
   "main": "node.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "clean": "rm -rf node_modules"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +18,5 @@
   },
   "engines": {
     "node": "v14.5.0"
-}
+  }
 }

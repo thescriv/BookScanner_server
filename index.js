@@ -5,27 +5,28 @@ const Nightmare = require('nightmare')
 const app = express()
 let stack = {}
 
+const port = process.env.PORT || '5000'
+
 app.use(cors())
 
 app.get('/getBarcode/:id', async (req, res) => {
+  console.log('got a request')
+
   const { id } = req.params
 
   console.log(`received ` + id)
 
   console.log(stack)
 
-  if (process.env.URL_BOOK && !stack[id]) {
-
+  if (!stack[id]) {
     try {
-
       stack[id] = await validOrNot(id)
-
     } catch (err) {
       throw err
     }
   }
 
-  res.send({ body: stack[id] })
+  res.send({ book_value: stack[id] })
 })
 
 async function validOrNot(barcode) {
@@ -37,7 +38,7 @@ async function validOrNot(barcode) {
     let bookValueInfo
 
     await nightmare
-      .goto(process.env.URL_BOOK)
+      .goto(`https://www.gibert.com/sao`)
       .evaluate((barcode) => {
         document.querySelectorAll('.input-text')[1].value = barcode
       }, barcode)
@@ -63,12 +64,13 @@ async function validOrNot(barcode) {
 }
 
 function revokeStack() {
+  console.log('cleaning stack...')
   stack = {}
 }
 
 var dayInMilliseconds = 1000 * 60 * 60 * 24
 setInterval(revokeStack, dayInMilliseconds)
 
-app.listen(process.env.PORT || '5000', () => {
+app.listen(port, () => {
   console.log('Listening...')
 })
