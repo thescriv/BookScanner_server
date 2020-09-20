@@ -60,7 +60,7 @@ async function validOrNot(barcode) {
     return bookValue
   } catch (err) {
     throw err
-  }
+  } 
 }
 
 function revokeStack() {
